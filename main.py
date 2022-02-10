@@ -1,7 +1,8 @@
 import cv2
 
-# Multithreading class!!!
+# Multithreading classes for the camera and the transfer object
 from threadedCam import ThreadedCamera
+from threadedTransfer import ThreadedTransfer
 
 # My import for constant parameters
 from params import *
@@ -10,7 +11,13 @@ from params import *
 driverCam = ThreadedCamera(DRIVER_CAM) # cv2.VideoCapture(2)
 codriverCam =  ThreadedCamera(CO_DRIVER_CAM) # cv2.VideoCapture(0)
 
+transfer = ThreadedTransfer()
+transfer.get_dev()
+
 if __name__ == '__main__':
+
+    sendFrame = False
+
     while True:
 
         codriverCam.update()
@@ -85,9 +92,16 @@ if __name__ == '__main__':
             THICKNESS
         )
 
-        # Show the frames
-        cv2.imshow("Driver Camera", formattedDriverCamFrame)
-        cv2.imshow("CoDriver Camera", formattedCodriverCamFrame)
+        # Show the frames (testing)
+        # cv2.imshow("Driver Camera", formattedDriverCamFrame)
+        # cv2.imshow("CoDriver Camera", formattedCodriverCamFrame)
+
+        # Send the frames like a USB Camera would
+        if sendFrame:
+            sendFrame = False
+            transfer.send([driverCamFrame, codriverCamFrame])
+        else:
+            sendFrame = True
 
         # Hit "q" to close the window
         if cv2.waitKey(1) & 0xFF == ord('q'):
