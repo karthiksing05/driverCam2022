@@ -16,7 +16,7 @@ if __name__ == '__main__':
         codriverCamFrame = codriverCam.grab_frame()
 
         # If cannot catch any frame, break
-        if codriverCamFrame.any():
+        if not codriverCamFrame.any():
             continue
 
         # Preprocessing the frames for faster display times
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         formattedCodriverCamFrame = cv2.putText(
             formattedCodriverCamFrame, 
             f"FPS: {codriverFPS}", 
-            name_coords, 
+            fps_coords, 
             FONT, 
             FONT_SCALE, 
             TEXT_COLOR, 

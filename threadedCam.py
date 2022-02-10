@@ -19,12 +19,13 @@ class ThreadedCamera(object):
     
     def update(self):
         if self.capture.isOpened():
-            (self.status, self.frame) = self.capture.read()
+            self.status, self.frame = self.capture.read()
 
     def grab_frame(self):
         if self.status:
             return self.frame
-        return np.array([])
+        else:
+            return np.array([])
 
     def get_FPS(self):
         return self.capture.get(cv2.CAP_PROP_FPS)
